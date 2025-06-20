@@ -13,6 +13,7 @@ A simple yet powerful Bash script to batch convert multiple local Mercurial (`hg
 ## Prerequisites
 
 Before you can use this script, you must have Git, Mercurial, and the `hg-fast-export` utility installed on your system.
+update the full path directory in the shell script file for the repos
 
 ### Installation
 
@@ -20,3 +21,9 @@ Before you can use this script, you must have Git, Mercurial, and the `hg-fast-e
 
 ```bash
 brew install mercurial git hg-fast-export
+```
+
+usage
+
+```bash
+./svn-to-git.sh {Mercurial repos directory} {Path_to_exported_git_repos}
