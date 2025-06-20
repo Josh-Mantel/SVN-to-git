@@ -8,7 +8,7 @@ HG_PARENT_DIR="$1"
 # The directory where the new Git repositories will be created.
 GIT_PARENT_DIR="$2"
 
-FullDir="~/Documents/GitHub/SVN-to-git"
+FullDir=""
 
 # --- Pre-flight Checks ---
 
