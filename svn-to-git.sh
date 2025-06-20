@@ -8,10 +8,12 @@ HG_PARENT_DIR="$1"
 # The directory where the new Git repositories will be created.
 GIT_PARENT_DIR="$2"
 
+FullDir="~/Documents/GitHub/SVN-to-git"
+
 # --- Pre-flight Checks ---
 
 # Check for the required 'hg-fast-export' tool.
-if ! command -v hg-fast-export &> /dev/null; then
+if ! command -v hg-fast-export.sh &> /dev/null; then
     echo "❌ Error: 'hg-fast-export' is not installed."
     echo "Please install it to proceed. On macOS: 'brew install hg-fast-export'. On Debian/Ubuntu: 'sudo apt-get install mercurial-fast-export'."
     exit 1
@@ -40,7 +42,7 @@ for hg_repo in "$HG_PARENT_DIR"/*; do
     # Check if it's a directory and a Mercurial repository.
     if [ -d "$hg_repo" ] && [ -d "$hg_repo/.hg" ]; then
         REPO_NAME=$(basename "$hg_repo")
-        GIT_REPO_PATH="$GIT_PARENT_DIR/$REPO_NAME.git"
+        GIT_REPO_PATH="$GIT_PARENT_DIR/$REPO_NAME"
 
         echo "-----------------------------------------------------"
         echo "⏳ Converting repository: $REPO_NAME"
@@ -52,12 +54,15 @@ for hg_repo in "$HG_PARENT_DIR"/*; do
         fi
 
         # 1. Initialize a new bare Git repository.
+        
         git init --bare "$GIT_REPO_PATH"
 
         # 2. Navigate into the new Git repo and run the conversion.
         (
             cd "$GIT_REPO_PATH" && \
-            hg-fast-export -r "$hg_repo" --no-metadata
+            git config core.IgnoreCase false && \
+            hg-fast-export.sh -r "$FullDir/$hg_repo" -f && \
+            git checkout HEAD
         )
 
         if [ $? -eq 0 ]; then
